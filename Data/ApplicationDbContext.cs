@@ -14,5 +14,7 @@ namespace sklad.Data
 		{
 		}
 		public DbSet<sklad.Models.OrderItem> OrderItem { get; set; }
+		public DbSet<sklad.Models.Address> Address { get; set; }
+		public DbSet<sklad.Models.Item> Item { get; set; }
 	}
 }
