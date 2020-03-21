@@ -10,6 +10,12 @@
     <Compile Remove="Data\Migrations\20200312144148_m2.Designer.cs" />
     <Compile Remove="Data\Migrations\20200312154015_m4.cs" />
     <Compile Remove="Data\Migrations\20200312154015_m4.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200320162607_m10.cs" />
+    <Compile Remove="Data\Migrations\20200320162607_m10.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200320162825_m11.cs" />
+    <Compile Remove="Data\Migrations\20200320162825_m11.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200320162913_m10.cs" />
+    <Compile Remove="Data\Migrations\20200320162913_m10.Designer.cs" />
   </ItemGroup>
 
 
@@ -17,6 +23,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
