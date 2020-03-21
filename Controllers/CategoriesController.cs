@@ -60,16 +60,17 @@ namespace sklad.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,CategoryId")] Category category)
+        public async Task<IActionResult> Create(Category model)
         {
             if (ModelState.IsValid)
             {
-                category.ParentCategory = _db.Category.Find(category.CategoryId);
+                Category category = new Category { Id=model.Id, Name=model.Name };
+                category.CategoryId = model.CategoryId != -1 ? model.CategoryId : null;
                 _db.Add(category);
                 await _db.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(category);
+            return View(model);
         }
 
         // GET: Categories/Edit/5
@@ -100,9 +101,9 @@ namespace sklad.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,CategoryId")] Category category)
+        public async Task<IActionResult> Edit(int id, Category model)
         {
-            if (id != category.Id)
+            if (id != model.Id)
             {
                 return NotFound();
             }
@@ -111,13 +112,14 @@ namespace sklad.Controllers
             {
                 try
                 {
-                    category.ParentCategory = _db.Category.Find(category.CategoryId);
+                    Category category = new Category { Id = model.Id, Name = model.Name };
+                    category.CategoryId = model.CategoryId != -1 ? model.CategoryId : null;
                     _db.Update(category);
                     await _db.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CategoryExists(category.Id))
+                    if (!CategoryExists(model.Id))
                     {
                         return NotFound();
                     }
@@ -128,7 +130,7 @@ namespace sklad.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(category);
+            return View(model);
         }
 
         // GET: Categories/Delete/5
@@ -155,8 +157,7 @@ namespace sklad.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var category = await _db.Category.FindAsync(id);
-            //foreach(var i in)
-            _db.Category.Remove(category);
+            _db.DeleteCategory(category);
             await _db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -165,5 +166,6 @@ namespace sklad.Controllers
         {
             return _db.Category.Any(e => e.Id == id);
         }
+
     }
 }
