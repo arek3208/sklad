@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 using sklad.Models;
 
 namespace sklad.Data
@@ -52,6 +53,22 @@ namespace sklad.Data
 				}
 			}
 			Category.Remove(parent);
+		}
+
+		public List<CategoryViewModel> CategoriesToViewModel(List<Category> categories)
+		{
+			List<CategoryViewModel> array = new List<CategoryViewModel>();
+			foreach (var i in categories)
+			{
+				CategoryViewModel c = new CategoryViewModel();
+				c.Name = i.Name;
+				if (i.ChildCategories != null)
+				{
+					c.Nodes = CategoriesToViewModel(i.ChildCategories);
+				}
+				array.Add(c);
+			}
+			return array;
 		}
 	}
 }

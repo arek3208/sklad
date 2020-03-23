@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 using sklad.Data;
 using sklad.Models;
 
@@ -20,12 +22,14 @@ namespace sklad.Controllers
         }
 
         // GET: Categories
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             return View(await _db.Category.ToListAsync());
         }
 
         // GET: Categories/Details/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -44,6 +48,7 @@ namespace sklad.Controllers
         }
 
         // GET: Categories/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             List<SelectListItem> CategoryListItems = new List<SelectListItem> { new SelectListItem {Text="Brak", Value="-1" } };
@@ -60,6 +65,7 @@ namespace sklad.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create(Category model)
         {
             if (ModelState.IsValid)
@@ -74,6 +80,7 @@ namespace sklad.Controllers
         }
 
         // GET: Categories/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -101,6 +108,7 @@ namespace sklad.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, Category model)
         {
             if (id != model.Id)
@@ -134,6 +142,7 @@ namespace sklad.Controllers
         }
 
         // GET: Categories/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -154,12 +163,19 @@ namespace sklad.Controllers
         // POST: Categories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var category = await _db.Category.FindAsync(id);
             _db.DeleteCategory(category);
             await _db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        public JsonResult GetCategories()
+        {
+            var categories = _db.CategoriesToViewModel(_db.Category.Where(x => x.ParentCategory == null).Include(x => x.ChildCategories).ToList());
+            return new JsonResult(categories);
         }
 
         private bool CategoryExists(int id)

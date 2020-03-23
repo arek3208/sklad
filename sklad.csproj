@@ -18,10 +18,15 @@
     <Compile Remove="Data\Migrations\20200320162913_m10.Designer.cs" />
     <Compile Remove="Data\Migrations\20200321141819_m11.cs" />
     <Compile Remove="Data\Migrations\20200321141819_m11.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200323130625_m11.cs" />
+    <Compile Remove="Data\Migrations\20200323130625_m11.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200323130857_m11.cs" />
+    <Compile Remove="Data\Migrations\20200323130857_m11.Designer.cs" />
   </ItemGroup>
 
 
   <ItemGroup>
+    <PackageReference Include="bootstrap-treeview" Version="1.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.1" />
