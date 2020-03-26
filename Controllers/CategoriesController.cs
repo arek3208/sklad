@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json.Linq;
 using sklad.Data;
 using sklad.Models;
 
@@ -51,12 +51,6 @@ namespace sklad.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
-            List<SelectListItem> CategoryListItems = new List<SelectListItem> { new SelectListItem {Text="Brak", Value="-1" } };
-            foreach(var c in _db.Category)
-            {
-                CategoryListItems.Add(new SelectListItem { Text = c.Name, Value = c.Id.ToString() });
-            }
-            ViewBag.Categories = CategoryListItems;
             return View();
         }
 
@@ -71,7 +65,6 @@ namespace sklad.Controllers
             if (ModelState.IsValid)
             {
                 Category category = new Category { Id=model.Id, Name=model.Name };
-                category.CategoryId = model.CategoryId != -1 ? model.CategoryId : null;
                 _db.Add(category);
                 await _db.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -93,13 +86,6 @@ namespace sklad.Controllers
             {
                 return NotFound();
             }
-            List<SelectListItem> CategoryListItems = new List<SelectListItem> { new SelectListItem { Text = "Brak", Value = "-1" } };
-            foreach (var c in _db.Category)
-            {
-                CategoryListItems.Add(new SelectListItem { Text = c.Name, Value = c.Id.ToString() });
-            }
-            CategoryListItems.RemoveAll(x => x.Value == category.Id.ToString());
-            ViewBag.Categories = CategoryListItems;
             return View(category);
         }
 
@@ -121,7 +107,6 @@ namespace sklad.Controllers
                 try
                 {
                     Category category = new Category { Id = model.Id, Name = model.Name };
-                    category.CategoryId = model.CategoryId != -1 ? model.CategoryId : null;
                     _db.Update(category);
                     await _db.SaveChangesAsync();
                 }
@@ -167,15 +152,9 @@ namespace sklad.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var category = await _db.Category.FindAsync(id);
-            _db.DeleteCategory(category);
+            _db.Remove(category);
             await _db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
-
-        public JsonResult GetCategories()
-        {
-            var categories = _db.CategoriesToViewModel(_db.Category.Where(x => x.ParentCategory == null).Include(x => x.ChildCategories).ToList());
-            return new JsonResult(categories);
         }
 
         private bool CategoryExists(int id)

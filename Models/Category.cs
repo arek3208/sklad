@@ -15,11 +15,5 @@ namespace sklad.Models
 		public string Name { get; set; }
 
 		public List<Item> Items { get; set; }
-
-		[DisplayName("Kategoria nadrzędna")]
-		public int? CategoryId { get; set; }
-		public Category ParentCategory { get; set; }
-
-		public List<Category> ChildCategories { get; set; }
 	}
 }

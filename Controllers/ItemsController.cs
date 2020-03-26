@@ -20,11 +20,6 @@ namespace sklad.Controllers
             _context = context;
         }
 
-        public IActionResult BrowseItems()
-        {
-            return View();
-        }
-
         // GET: Items
         public async Task<IActionResult> Index()
         {
@@ -162,6 +157,22 @@ namespace sklad.Controllers
             _context.Item.Remove(item);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult BrowseItems()
+        {
+            var categories = _context.Category;
+            return View(categories);
+        }
+
+        public IActionResult ItemsFromCategory(int? id)
+        {
+            var items = _context.Item.Include(i => i.Category).AsQueryable();
+            if(id != null)
+            {
+                items = items.Where(i => i.CategoryId == id);
+            }
+            return PartialView(items); ;
         }
 
         private bool ItemExists(int id)
