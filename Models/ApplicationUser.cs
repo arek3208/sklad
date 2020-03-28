@@ -11,10 +11,14 @@ namespace sklad.Models
 	public class ApplicationUser : IdentityUser
 	{
 		[Required]
+		[PersonalData]
 		public string FirstName { get; set; }
+
 		[Required]
+		[PersonalData]
 		public string LastName { get; set; }
 
+		[PersonalData]
 		public string Company { get; set; }
 
 		public List<Address> Addresses { get; set; }

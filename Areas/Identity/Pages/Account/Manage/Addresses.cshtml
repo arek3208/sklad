@@ -1,0 +1,65 @@
+﻿@page
+@model sklad.Areas.Identity.Pages.Account.Manage.AddressesModel
+@{
+    ViewData["Title"] = "Twoje adresy";
+    ViewData["ActivePage"] = ManageNavPages.Addresses;
+}
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Addresses[0].Street)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Addresses[0].BuildingNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Addresses[0].UnitNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Addresses[0].PostalCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Addresses[0].City)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Addresses[0].ApplicationUser)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Addresses)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Street)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BuildingNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UnitNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PostalCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.City)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApplicationUser.Id)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
