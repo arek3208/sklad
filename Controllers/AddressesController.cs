@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -14,15 +15,19 @@ namespace sklad.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        public AddressesController(ApplicationDbContext context)
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        public AddressesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Addresses
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Address.Include(a => a.ApplicationUser);
+            var user = await _userManager.GetUserAsync(User);
+            var applicationDbContext = _context.Address.Include(a => a.ApplicationUser).Where(a => a.ApplicationUser == user);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -48,7 +53,6 @@ namespace sklad.Controllers
         // GET: Addresses/Create
         public IActionResult Create()
         {
-            ViewData["ApplicationUserId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
 
@@ -57,15 +61,15 @@ namespace sklad.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Street,BuildingNo,UnitNo,PostalCode,City,ApplicationUserId")] Address address)
+        public async Task<IActionResult> Create([Bind("Id,Street,BuildingNo,UnitNo,PostalCode,City")] Address address)
         {
+            address.ApplicationUser = await _userManager.GetUserAsync(User);
             if (ModelState.IsValid)
             {
                 _context.Add(address);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ApplicationUserId"] = new SelectList(_context.Users, "Id", "Id", address.ApplicationUserId);
             return View(address);
         }
 
@@ -82,7 +86,6 @@ namespace sklad.Controllers
             {
                 return NotFound();
             }
-            ViewData["ApplicationUserId"] = new SelectList(_context.Users, "Id", "Id", address.ApplicationUserId);
             return View(address);
         }
 
@@ -91,12 +94,14 @@ namespace sklad.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Street,BuildingNo,UnitNo,PostalCode,City,ApplicationUserId")] Address address)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Street,BuildingNo,UnitNo,PostalCode,City")] Address address)
         {
             if (id != address.Id)
             {
                 return NotFound();
             }
+
+            address.ApplicationUser = await _userManager.GetUserAsync(User);
 
             if (ModelState.IsValid)
             {
@@ -118,7 +123,6 @@ namespace sklad.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ApplicationUserId"] = new SelectList(_context.Users, "Id", "Id", address.ApplicationUserId);
             return View(address);
         }
 

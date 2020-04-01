@@ -64,7 +64,7 @@ namespace sklad.Controllers
         {
             if (ModelState.IsValid)
             {
-                Category category = new Category { Id=model.Id, Name=model.Name };
+                Category category = new Category { Id = model.Id, Name = model.Name };
                 _db.Add(category);
                 await _db.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

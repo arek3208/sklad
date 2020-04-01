@@ -20,8 +20,6 @@ namespace sklad.Areas.Identity.Pages.Account.Manage
 
         public static string TwoFactorAuthentication => "TwoFactorAuthentication";
 
-        public static string Addresses => "Addresses";
-
         public static string IndexNavClass(ViewContext viewContext) => PageNavClass(viewContext, Index);
 
         public static string EmailNavClass(ViewContext viewContext) => PageNavClass(viewContext, Email);
@@ -33,8 +31,6 @@ namespace sklad.Areas.Identity.Pages.Account.Manage
         public static string PersonalDataNavClass(ViewContext viewContext) => PageNavClass(viewContext, PersonalData);
 
         public static string TwoFactorAuthenticationNavClass(ViewContext viewContext) => PageNavClass(viewContext, TwoFactorAuthentication);
-
-        public static string AddressesNavClass(ViewContext viewContext) => PageNavClass(viewContext, Addresses);
 
         private static string PageNavClass(ViewContext viewContext, string page)
         {

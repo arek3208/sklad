@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace sklad.Models
@@ -18,9 +19,8 @@ namespace sklad.Models
 		[Required]
 		public string City { get; set; }
 
-		[Required]
 		public string ApplicationUserId { get; set; }
-		[Required]
 		public ApplicationUser ApplicationUser { get; set; }
+
 	}
 }
