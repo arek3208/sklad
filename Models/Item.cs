@@ -30,5 +30,16 @@ namespace sklad.Models
 		public Category Category { get; set; }
 
 		public enum PriceType { unit, kilogram }
+
+		public Item(Item item)
+		{
+			Id = item.Id;
+			Name = item.Name;
+			Price = item.Price;
+			PriceFor = item.PriceFor;
+			Quantity = item.Quantity;
+			Category = item.Category;
+			CategoryId = item.CategoryId;
+		}
 	}
 }
