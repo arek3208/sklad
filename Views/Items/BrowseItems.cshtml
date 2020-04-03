@@ -1,45 +1,72 @@
-﻿@model IEnumerable<sklad.Models.Category>
+﻿@model IEnumerable<sklad.Models.Item>
 
 @{
     ViewData["Title"] = "BrowseItems";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-    <div class="list-group" id="categories">
-        <a href="#" class="list-group-item list-group-item-action" data-id="null">Wszystkie</a>
-        @foreach (var c in Model)
-        {
-            <a href="#" class="list-group-item list-group-item-action" data-id="@c.Id">@c.Name</a>
-        }
-    </div>
-
-<div id="content">
-
+<div class="list-group" id="categories">
+    <a asp-action="BrowseItems" asp-route-id="" class="list-group-item list-group-item-action" data-id="0">Wszystkie</a>
+    @foreach (var c in ViewBag.categories)
+    {
+        <a asp-action="BrowseItems" asp-route-id="@c.Id" class="list-group-item list-group-item-action" data-id="@c.Id">@c.Name</a>
+    }
 </div>
 
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PriceFor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Category)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PriceFor)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category.Name)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
 <script>
-    function getItems(id) {
-        $.ajax({
-            method: "GET",
-            url: "/Items/ItemsFromCategory/" + id,
-            cache: false,
-            success: function (e) {
-                $("#content").html(e);
-            }
-        })
-    }
-
+    var active = @(ViewBag.active ?? 0);
     $(document).ready(function () {
-        $('#categories a:first').addClass('active');
-        getItems();
+        $("#categories a[data-id=" + active + "]").addClass('active');
     })
-
-    $('#categories a').on('click', function () {
-        $('#categories a.active').removeClass('active');
-        $(this).addClass('active');
-        getItems($(this).data("id"))
-    });
-
 </script>
+
 
 

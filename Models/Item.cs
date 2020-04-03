@@ -31,15 +31,5 @@ namespace sklad.Models
 
 		public enum PriceType { unit, kilogram }
 
-		public Item(Item item)
-		{
-			Id = item.Id;
-			Name = item.Name;
-			Price = item.Price;
-			PriceFor = item.PriceFor;
-			Quantity = item.Quantity;
-			Category = item.Category;
-			CategoryId = item.CategoryId;
-		}
 	}
 }

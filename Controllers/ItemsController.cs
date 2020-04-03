@@ -159,20 +159,17 @@ namespace sklad.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult BrowseItems()
+        public IActionResult BrowseItems(int? id)
         {
             var categories = _context.Category;
-            return View(categories);
-        }
-
-        public IActionResult ItemsFromCategory(int? id)
-        {
+            ViewBag.categories = categories;
+            ViewBag.active = id;
             var items = _context.Item.Include(i => i.Category).AsQueryable();
-            if(id != null)
+            if (id != null)
             {
                 items = items.Where(i => i.CategoryId == id);
             }
-            return PartialView(items); ;
+            return View(items);
         }
 
         private bool ItemExists(int id)

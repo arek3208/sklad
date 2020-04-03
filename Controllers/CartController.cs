@@ -18,7 +18,7 @@ namespace sklad.Controllers
 
 		public CartController(ApplicationDbContext db)
 		{
-			db = _db;
+			_db = db;
 		}
 
 		public IActionResult Index()
