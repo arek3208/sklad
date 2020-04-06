@@ -28,9 +28,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Quantity)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Category)
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -51,10 +48,15 @@
                     @Html.DisplayFor(modelItem => item.Quantity)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Category.Name)
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 </td>
                 <td>
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    @using (Html.BeginForm("Add", "Cart"))
+                    {
+                    <input type="hidden" name="id" value="@item.Id"/>
+                    <input type="number" name="amount" />
+                    <input type="submit" value="Dodaj do koszyka" />
+                    }
                 </td>
             </tr>
         }

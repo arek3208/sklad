@@ -1,0 +1,60 @@
+﻿@model List<Tuple<sklad.Models.Item, int>>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Koszyk</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model[0].Item1.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].Item1.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].Item1.PriceFor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].Item2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].Item1.Category.Name)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Item1.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Item1.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Item1.PriceFor)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Item2)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Item1.Category.Name)
+                </td>
+                <td>
+                    <a asp-controller="Cart" asp-action="Remove" asp-route-id="@item.Item1.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<a class="nav-link text-dark" asp-area="" asp-controller="" asp-action="">Zamów</a>
+<script>
+    document.write('<a href="' + document.referrer + '">Powrót do zakupów</a>');
+</script>

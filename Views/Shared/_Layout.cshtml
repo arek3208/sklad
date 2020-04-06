@@ -39,6 +39,16 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Warehouse">Zarządzanie magazynem</a>
                             </li>
                         }
+
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Orders">Zamówienia </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Cart" asp-action="Index">Koszyk </a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>

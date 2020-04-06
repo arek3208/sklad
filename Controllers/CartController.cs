@@ -23,7 +23,19 @@ namespace sklad.Controllers
 
 		public IActionResult Index()
 		{
-			return View();
+			Dictionary<int, int> cart = HttpContext.Session.GetObject<Dictionary<int, int>>("cart");
+			if (cart == null)
+			{
+				cart = new Dictionary<int, int>();
+			}
+
+			var items = new List<Tuple<Item, int>>();
+			foreach(var i in cart)
+			{
+				items.Add(new Tuple<Item, int>(_db.Item.Find(i.Key), i.Value));
+			}
+
+			return View(items);
 		}
 
 		public IActionResult Add(int id, int amount)

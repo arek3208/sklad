@@ -35,5 +35,11 @@ namespace sklad.Controllers
 		{
 			return View();
 		}
+
+		[Authorize]
+		public IActionResult Orders()
+		{
+			return View();
+		}
 	}
 }
