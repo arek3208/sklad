@@ -54,7 +54,5 @@
         }
     </tbody>
 </table>
-<a class="nav-link text-dark" asp-area="" asp-controller="" asp-action="">Zamów</a>
-<script>
-    document.write('<a href="' + document.referrer + '">Powrót do zakupów</a>');
-</script>
+<a class="nav-link" asp-controller="Orders" asp-action="MakeOrder">Zamów</a>
+<a class="nav-link" asp-controller="Items" asp-action="BrowseItems">Powrót do zakupów</a>

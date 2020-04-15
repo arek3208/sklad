@@ -10,13 +10,23 @@ namespace sklad.Models
 	public class Address
 	{
 		public int Id { get; set; }
+
+		[Display(Name = "Ulica")]
 		public string Street { get; set; }
+
 		[Required]
+		[Display(Name = "Numer budynku")]
 		public string BuildingNo { get; set; }
+
+		[Display(Name = "Numer lokalu")]
 		public string UnitNo { get; set; }
+
 		[Required]
+		[Display(Name = "Kod pocztowy")]
 		public string PostalCode { get; set; }
+
 		[Required]
+		[Display(Name = "Miasto")]
 		public string City { get; set; }
 
 		public string ApplicationUserId { get; set; }

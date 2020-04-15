@@ -12,13 +12,16 @@ namespace sklad.Models
 	{
 		[Required]
 		[PersonalData]
+		[Display(Name = "Imię")]
 		public string FirstName { get; set; }
 
 		[Required]
 		[PersonalData]
+		[Display(Name = "Nazwisko")]
 		public string LastName { get; set; }
 
 		[PersonalData]
+		[Display(Name = "Firma")]
 		public string Company { get; set; }
 
 		public List<Address> Addresses { get; set; }

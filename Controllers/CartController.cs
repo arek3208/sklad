@@ -21,7 +21,7 @@ namespace sklad.Controllers
 			_db = db;
 		}
 
-		public IActionResult Index()
+		public async Task<IActionResult> Index()
 		{
 			Dictionary<int, int> cart = HttpContext.Session.GetObject<Dictionary<int, int>>("cart");
 			if (cart == null)
@@ -32,7 +32,7 @@ namespace sklad.Controllers
 			var items = new List<Tuple<Item, int>>();
 			foreach(var i in cart)
 			{
-				items.Add(new Tuple<Item, int>(_db.Item.Find(i.Key), i.Value));
+				items.Add(new Tuple<Item, int>(await _db.Item.FindAsync(i.Key), i.Value));
 			}
 
 			return View(items);
@@ -40,6 +40,15 @@ namespace sklad.Controllers
 
 		public IActionResult Add(int id, int amount)
 		{
+			var item = _db.Item.Find(id);
+			if(item == null)
+			{
+				return new NotFoundResult();
+			}
+			if(amount < 1 || amount > item.Quantity)
+			{
+				return new ConflictResult();
+			}
 			Dictionary<int, int> cart = HttpContext.Session.GetObject<Dictionary<int, int>>("cart");
 			if(cart == null)
 			{

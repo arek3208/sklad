@@ -1,73 +1,81 @@
 ﻿@model IEnumerable<sklad.Models.Item>
 
 @{
-    ViewData["Title"] = "BrowseItems";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewData["Title"] = "BrowseItems";
+	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="list-group" id="categories">
-    <a asp-action="BrowseItems" asp-route-id="" class="list-group-item list-group-item-action" data-id="0">Wszystkie</a>
-    @foreach (var c in ViewBag.categories)
-    {
-        <a asp-action="BrowseItems" asp-route-id="@c.Id" class="list-group-item list-group-item-action" data-id="@c.Id">@c.Name</a>
-    }
+	<a asp-action="BrowseItems" asp-route-id="" class="list-group-item list-group-item-action" data-id="0">Wszystkie</a>
+	@foreach (var c in ViewBag.categories)
+	{
+		<a asp-action="BrowseItems" asp-route-id="@c.Id" class="list-group-item list-group-item-action" data-id="@c.Id">@c.Name</a>
+	}
 </div>
 
 <table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PriceFor)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Quantity)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PriceFor)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Quantity)
-                </td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                </td>
-                <td>
-                    @using (Html.BeginForm("Add", "Cart"))
-                    {
-                    <input type="hidden" name="id" value="@item.Id"/>
-                    <input type="number" name="amount" />
-                    <input type="submit" value="Dodaj do koszyka" />
-                    }
-                </td>
-            </tr>
-        }
-    </tbody>
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.Name)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Price)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.PriceFor)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Quantity)
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.Name)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Price)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.PriceFor)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Quantity)
+				</td>
+				<td>
+					<a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+				</td>
+				<td>
+					@using (Html.BeginForm("Add", "Cart", FormMethod.Get))
+					{
+						<input type="hidden" name="id" value="@item.Id" />
+						<input class="form-control" min="1" type="number" value="1" name="amount" data-val="true" data-val-required="Podaj ilość" data-val-range="Ilość powinna być większa od 0 i mniejsza od ilości towaru w magazynie" data-val-range-min="1" data-val-range-max="@item.Quantity" />
+						<span class="text-danger field-validation-valid" data-valmsg-for="amount" data-valmsg-replace="true"></span>
+						<input type="submit" value="Dodaj do koszyka" />
+					}
+				</td>
+			</tr>
+		}
+	</tbody>
 </table>
-
+@section Scripts {
+	@{await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}
 <script>
-    var active = @(ViewBag.active ?? 0);
-    $(document).ready(function () {
-        $("#categories a[data-id=" + active + "]").addClass('active');
-    })
+	var active = @(ViewBag.active ?? 0);
+	$(document).ready(function () {
+		$("#categories a[data-id=" + active + "]").addClass('active');
+	})
+
+	$(function () {
+		$("form").validate();
+	});
+
 </script>
 
 
