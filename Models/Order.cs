@@ -13,7 +13,7 @@ namespace sklad.Models
 
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		[Display(Name = "Data zamówienia")]
-		public DateTime OrderDate { get; set; }
+		public DateTime OrderDate { get; set; } = DateTime.Now;
 
 		[Display(Name = "Data realizacji")]
 		public DateTime? RealizationDate { get; set; }
@@ -25,6 +25,9 @@ namespace sklad.Models
 		[ForeignKey("Driver")]
 		public string DriverId { get; set; }
 		public ApplicationUser Driver { get; set; }
+
+		public int AddressId { get; set; }
+		public Address Address { get; set; }
 
 		public List<OrderItem> OrderItems { get; set; }
 	}

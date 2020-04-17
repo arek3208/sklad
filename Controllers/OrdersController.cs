@@ -25,16 +25,29 @@ namespace sklad.Controllers
 			_userManager = userManager;
 		}
 
-	    [Authorize]
-		public async Task<IActionResult> MakeOrder()
+		[Authorize]
+		public async Task<IActionResult> SelectAddress()
 		{
+			var user = await _userManager.GetUserAsync(User);
+			var addresses = _context.Address.Include(a => a.ApplicationUser).Where(a => a.ApplicationUser == user);
+			return View(addresses);
+		}
+
+	    [Authorize]
+		public async Task<IActionResult> MakeOrder(int AddressId)
+		{
+			var Address = _context.Address.Find(AddressId);
+			if (Address == null)
+			{
+				return NotFound();
+			}
 			Dictionary<int, int> cart = HttpContext.Session.GetObject<Dictionary<int, int>>("cart");
 			if (cart == null)
 			{
 				return RedirectToAction("BrowseItems", "Items");
 			}
 			var user = await _userManager.GetUserAsync(User);
-			var order = new Order { ClientId = user.Id, /*OrderDate = DateTime.Now,*/ OrderItems = new List<OrderItem>()};
+			var order = new Order { ClientId = user.Id, OrderItems = new List<OrderItem>(), AddressId = AddressId};
 			foreach(var i in cart)
 			{
 				var item = await _context.Item.FindAsync(i.Key);
@@ -44,6 +57,7 @@ namespace sklad.Controllers
 			}
 			await _context.Order.AddAsync(order);
 			await _context.SaveChangesAsync();
+			HttpContext.Session.Remove("cart");
 			return View(order);
 		}
 

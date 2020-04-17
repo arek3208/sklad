@@ -27,8 +27,8 @@ namespace sklad.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(User);
-            var applicationDbContext = _context.Address.Include(a => a.ApplicationUser).Where(a => a.ApplicationUser == user);
-            return View(await applicationDbContext.ToListAsync());
+            var addresses = _context.Address.Include(a => a.ApplicationUser).Where(a => a.ApplicationUser == user);
+            return View(await addresses.ToListAsync());
         }
 
         // GET: Addresses/Details/5
@@ -51,8 +51,9 @@ namespace sklad.Controllers
         }
 
         // GET: Addresses/Create
-        public IActionResult Create()
+        public IActionResult Create(bool Cart = false)
         {
+            ViewBag.Cart = Cart;
             return View();
         }
 
@@ -61,15 +62,17 @@ namespace sklad.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Street,BuildingNo,UnitNo,PostalCode,City")] Address address)
+        public async Task<IActionResult> Create([Bind("Id,Street,BuildingNo,UnitNo,PostalCode,City")] Address address, bool Cart = false)
         {
             address.ApplicationUser = await _userManager.GetUserAsync(User);
             if (ModelState.IsValid)
             {
                 _context.Add(address);
                 await _context.SaveChangesAsync();
+                if (Cart) return RedirectToAction("SelectAddress", "Orders");
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.Cart = Cart;
             return View(address);
         }
 
