@@ -41,5 +41,6 @@ namespace sklad.Models
 			kilogram 
 		}
 
+		public string Image { get; set; }
 	}
 }
