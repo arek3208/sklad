@@ -9,6 +9,7 @@ namespace sklad.Models
 {
 	public class Order
 	{
+		[Display(Name = "Numer zamówienia")]
 		public int Id { get; set; }
 
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -29,6 +30,7 @@ namespace sklad.Models
 		public int AddressId { get; set; }
 		public Address Address { get; set; }
 
+		[Display(Name = "Towary")]
 		public List<OrderItem> OrderItems { get; set; }
 	}
 }

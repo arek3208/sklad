@@ -1,0 +1,115 @@
+﻿@model Tuple<List<Order>, List<Order>>
+
+@{
+    ViewData["Title"] = "AvailableOrders";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Moje zamówienia</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Item1[0].Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Item1[0].OrderDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Item1[0].OrderItems)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Item1[0].Client)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Item1[0].Address)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Item1)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderDate)
+            </td>
+            <td>
+                @foreach (var oi in item.OrderItems)
+                {
+                    @Html.Raw($"{oi.Amount} (");
+                    @Html.DisplayFor(x => oi.Item.PriceFor);
+                    @Html.Raw($") {oi.Item.Name}</ br>");
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Client.Formatted)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address.Formatted)
+            </td>
+            <td>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+<h1>Dostępne zamówienia</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Item2[0].Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Item2[0].OrderDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Item2[0].OrderItems)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Item2[0].Client)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Item2[0].Address)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Item2)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderDate)
+            </td>
+            <td>
+                @foreach (var oi in item.OrderItems)
+                {
+                    @Html.Raw($"{oi.Amount} (");
+                    @Html.DisplayFor(x => oi.Item.PriceFor);
+                    @Html.Raw($") {oi.Item.Name}</ br>");
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Client.Formatted)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address.Formatted)
+            </td>
+            <td>
+                <a asp-action="TakeOrder" asp-route-id="@item.Id">Przyjmij</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

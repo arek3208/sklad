@@ -48,44 +48,61 @@ namespace sklad.Controllers
 			}
 			var user = await _userManager.GetUserAsync(User);
 			var order = new Order { ClientId = user.Id, OrderItems = new List<OrderItem>(), AddressId = AddressId};
-			foreach(var i in cart)
+			await _context.Order.AddAsync(order);
+			foreach (var i in cart)
 			{
 				var item = await _context.Item.FindAsync(i.Key);
+				if (i.Value < 1 || i.Value > item.Quantity)
+				{
+					return new ConflictResult();
+				}
+				item.Quantity -= i.Value;
 				var orderitem = new OrderItem { Amount=i.Value, Item=item, Order=order, Price = i.Value * item.Price};
-				order.OrderItems.Add(orderitem);
 				await _context.OrderItem.AddAsync(orderitem);
+				order.OrderItems.Add(orderitem);
 			}
-			await _context.Order.AddAsync(order);
 			await _context.SaveChangesAsync();
 			HttpContext.Session.Remove("cart");
 			return View(order);
 		}
 
 		// GET: Orders
-		public async Task<IActionResult> Index()
+		public async Task<IActionResult> MyOrders()
 		{
-			var applicationDbContext = _context.Order.Include(o => o.Client).Include(o => o.Driver);
-			return View(await applicationDbContext.ToListAsync());
+			var user = await _userManager.GetUserAsync(User);
+			var orders = _context.Order.Include(o => o.Client).Include(o => o.Driver).Include(o => o.Address).Where(o => o.ClientId == user.Id);
+			return View(await orders.ToListAsync());
 		}
 
-		// GET: Orders/Details/5
-		public async Task<IActionResult> Details(int? id)
+		[Authorize(Roles = "Admin, Driver")]
+		public async Task<IActionResult> AvailableOrders()
 		{
-			if (id == null)
-			{
-				return NotFound();
-			}
+			var user = await _userManager.GetUserAsync(User);
+			var availableOrders = _context.Order.Include(o => o.Client).Include(o => o.OrderItems).ThenInclude(o => o.Item).Include(o => o.Address).Where(o => o.Driver == null).ToList();
+			var myOrders = _context.Order.Include(o => o.Client).Include(o => o.OrderItems).ThenInclude(o => o.Item).Include(o => o.Address).Where(o => o.DriverId == user.Id).ToList();
+			return View(new Tuple<List<Order>, List<Order>>(myOrders, availableOrders));
+		}
 
-			var order = await _context.Order
-				.Include(o => o.Client)
-				.Include(o => o.Driver)
-				.FirstOrDefaultAsync(m => m.Id == id);
-			if (order == null)
-			{
-				return NotFound();
-			}
+		[Authorize(Roles = "Admin, Driver")]
+		public async Task<IActionResult> DriverFinishedOrders()
+		{
+			var user = await _userManager.GetUserAsync(User);
+			var orders = _context.Order.Include(o => o.Client).Include(o => o.Driver).Include(o => o.Address).Where(o => o.Driver.Id == user.Id && o.RealizationDate.HasValue);
+			return View(orders);
+		}
 
-			return View(order);
+		[Authorize(Roles = "Admin, Driver")]
+		public async Task<IActionResult> TakeOrder(int id)
+		{
+			var order = _context.Order.Find(id);
+			if(order.Driver != null)
+			{
+				return BadRequest();
+			}
+			order.Driver = await _userManager.GetUserAsync(User);
+			_context.Update(order);
+			await _context.SaveChangesAsync();
+			return RedirectToAction("AvailableOrders");
 		}
 
 		// GET: Orders/Edit/5

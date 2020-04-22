@@ -40,6 +40,13 @@
                             </li>
                         }
 
+                        @if (User.IsInRole("Admin") || User.IsInRole("Driver"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Orders" asp-action="AvailableOrders">Panel kierowcy</a>
+                            </li>
+                        }
+
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">

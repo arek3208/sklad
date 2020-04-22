@@ -32,5 +32,21 @@ namespace sklad.Models
 		public string ApplicationUserId { get; set; }
 		public ApplicationUser ApplicationUser { get; set; }
 
+		public override string ToString()
+		{
+			StringBuilder sb = new StringBuilder($"{Street} {BuildingNo}");
+			if (UnitNo != "")
+			{
+				sb.Append($"/{UnitNo}");
+			}
+			sb.Append($" {PostalCode} {City}");
+			return sb.ToString();
+		}
+
+		public string Formatted
+		{
+			get => ToString();
+		}
+
 	}
 }

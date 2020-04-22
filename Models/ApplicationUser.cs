@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace sklad.Models
@@ -30,5 +31,25 @@ namespace sklad.Models
 		public List<Order> ClientOrders { get; set; }
 		[InverseProperty("Driver")]
 		public List<Order> DriverOrders { get; set; }
+
+		public string Formatted
+		{
+			get => ToString();
+		}
+
+		public override string ToString()
+		{
+			StringBuilder sb = new StringBuilder();
+			if(Company != "")
+			{
+				sb.Append(Company);
+				sb.Append(' ');
+			}
+			sb.Append(FirstName);
+			sb.Append(' ');
+			sb.Append(LastName);
+			sb.Append(' ');
+			return sb.ToString();
+		}
 	}
 }
