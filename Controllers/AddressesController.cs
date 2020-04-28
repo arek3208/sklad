@@ -62,7 +62,7 @@ namespace sklad.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Street,BuildingNo,UnitNo,PostalCode,City")] Address address, bool Cart = false)
+        public async Task<IActionResult> Create([Bind("Street,BuildingNo,UnitNo,PostalCode,City")] Address address, bool Cart = false)
         {
             address.ApplicationUser = await _userManager.GetUserAsync(User);
             if (ModelState.IsValid)
@@ -154,7 +154,8 @@ namespace sklad.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var address = await _context.Address.FindAsync(id);
-            _context.Address.Remove(address);
+            var user = await _userManager.GetUserAsync(User);
+            user.Addresses.Remove(address);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

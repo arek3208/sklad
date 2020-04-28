@@ -106,5 +106,45 @@ namespace sklad.Controllers
             }
             return RedirectToAction("UserList");
         }
+
+        public IActionResult EditCompanyAddress()
+        {
+            return View(Address.CompanyAddress);
+        }
+
+        [HttpPost]
+        public IActionResult EditCompanyAddress(Address address)
+        {
+            if(ModelState.IsValid)
+            {
+                Address.CompanyAddress = address;
+                return RedirectToAction("Index", "Admin");
+            }
+            return View(address);
+        }
+
+        public IActionResult Statistics()
+        {
+            return View();
+        }
+
+        public IActionResult MonthStatistics(ushort month, short year)
+        {
+            if(month == 0 || month > 12)
+            {
+                return BadRequest();
+            }
+            var orders = _db.Order.Where(o => o.OrderDate.Year == year && o.OrderDate.Month == month);
+            var ordersAmount = orders.Count();
+            decimal income = 0;
+            foreach(var o in orders.Include(x => x.OrderItems))
+            {
+                foreach(var i in o.OrderItems)
+                {
+                    income += i.Amount * i.Price;
+                }
+            }
+            return new JsonResult(new Tuple<int, decimal>(ordersAmount, income));
+        }
     }
 }

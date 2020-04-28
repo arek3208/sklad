@@ -22,6 +22,8 @@
     <Compile Remove="Data\Migrations\20200323130625_m11.Designer.cs" />
     <Compile Remove="Data\Migrations\20200323130857_m11.cs" />
     <Compile Remove="Data\Migrations\20200323130857_m11.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200428095146_m21.cs" />
+    <Compile Remove="Data\Migrations\20200428095146_m21.Designer.cs" />
   </ItemGroup>
 
 
@@ -32,7 +34,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.1" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.2" />
   </ItemGroup>
 
 

@@ -48,5 +48,6 @@ namespace sklad.Models
 			get => ToString();
 		}
 
+		public static Address CompanyAddress { get; set; } = new Address { City = "Nowy Sącz", Street = "Piłsudskiego", BuildingNo = "1", PostalCode = "33-300" };
 	}
 }

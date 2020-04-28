@@ -46,22 +46,22 @@ namespace sklad.Controllers
 			{
 				return RedirectToAction("BrowseItems", "Items");
 			}
-			var user = await _userManager.GetUserAsync(User);
-			var order = new Order { ClientId = user.Id, OrderItems = new List<OrderItem>(), AddressId = AddressId};
-			await _context.Order.AddAsync(order);
+			var user = _userManager.GetUserAsync(User);
+			var order = new Order { ClientId = (await user).Id, OrderItems = new List<OrderItem>(), AddressId = AddressId};
+			_context.Order.Add(order);
 			foreach (var i in cart)
 			{
-				var item = await _context.Item.FindAsync(i.Key);
+				var item = _context.Item.Find(i.Key);
 				if (i.Value < 1 || i.Value > item.Quantity)
 				{
 					return new ConflictResult();
 				}
 				item.Quantity -= i.Value;
 				var orderitem = new OrderItem { Amount=i.Value, Item=item, Order=order, Price = i.Value * item.Price};
-				await _context.OrderItem.AddAsync(orderitem);
+				_context.OrderItem.Add(orderitem);
 				order.OrderItems.Add(orderitem);
 			}
-			await _context.SaveChangesAsync();
+			_context.SaveChanges();
 			HttpContext.Session.Remove("cart");
 			return View(order);
 		}
@@ -78,8 +78,9 @@ namespace sklad.Controllers
 		public async Task<IActionResult> AvailableOrders()
 		{
 			var user = await _userManager.GetUserAsync(User);
-			var availableOrders = _context.Order.Include(o => o.Client).Include(o => o.OrderItems).ThenInclude(o => o.Item).Include(o => o.Address).Where(o => o.Driver == null).ToList();
-			var myOrders = _context.Order.Include(o => o.Client).Include(o => o.OrderItems).ThenInclude(o => o.Item).Include(o => o.Address).Where(o => o.DriverId == user.Id).ToList();
+			var orders = _context.Order.Include(o => o.Client).Include(o => o.OrderItems).ThenInclude(o => o.Item).Include(o => o.Address);
+			var availableOrders = orders.Where(o => o.Driver == null).ToList();
+			var myOrders = orders.Where(o => o.DriverId == user.Id).ToList();
 			return View(new Tuple<List<Order>, List<Order>>(myOrders, availableOrders));
 		}
 

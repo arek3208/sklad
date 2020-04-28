@@ -31,7 +31,7 @@ namespace sklad
 			services.AddDbContext<ApplicationDbContext>(options =>
 				options.UseSqlServer(
 					Configuration.GetConnectionString("DefaultConnection")));
-			services.AddDefaultIdentity<ApplicationUser>(options => { options.SignIn.RequireConfirmedAccount = true; options.Password.RequireDigit = false; options.Password.RequireLowercase = false; options.Password.RequireNonAlphanumeric = false; options.Password.RequireUppercase = false; })
+			services.AddDefaultIdentity<ApplicationUser>(options => { options.SignIn.RequireConfirmedAccount = false; options.Password.RequireDigit = false; options.Password.RequireLowercase = false; options.Password.RequireNonAlphanumeric = false; options.Password.RequireUppercase = false; })
 				.AddRoles<IdentityRole>()
 				.AddEntityFrameworkStores<ApplicationDbContext>();
 			services.AddControllersWithViews();
@@ -109,7 +109,7 @@ namespace sklad
 					LastName = "Admin",
 					EmailConfirmed = true
 				};
-				string adminPassword = "1qaz@WSX";
+				string adminPassword = "123456";
 
 				var createPowerUser = await UserManager.CreateAsync(powerUser, adminPassword);
 				if (createPowerUser.Succeeded)

@@ -54,7 +54,7 @@
 					<img class="img-responsive" src="@Url.Content("~/images/items/" + @item.Image)" alt="">
 				</td>
 				<td>
-					<a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+					<a asp-action="Details" asp-route-id="@item.Id" asp-route-order="true" asp-route-category="@ViewBag.active">Details</a> |
 				</td>
 				<td>
 					@using (Html.BeginForm("Add", "Cart", FormMethod.Get))

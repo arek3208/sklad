@@ -1,0 +1,60 @@
+﻿@model IEnumerable<sklad.Models.Order>
+
+@{
+    ViewData["Title"] = "DriverFinishedOrders";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Zakończone zamówienia</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderItems)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Client)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrderDate)
+                </td>
+                <td>
+                    @foreach (var oi in item.OrderItems)
+                    {
+                        @Html.Raw($"{oi.Amount} (");
+                        @Html.DisplayFor(x => oi.Item.PriceFor);
+                        @Html.Raw($") {oi.Item.Name} </ br>");
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Client.Formatted)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address.Formatted)
+                </td>
+                <td>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

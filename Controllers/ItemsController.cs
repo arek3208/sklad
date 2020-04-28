@@ -25,12 +25,12 @@ namespace sklad.Controllers
 		// GET: Items
 		public async Task<IActionResult> Index()
 		{
-			var applicationDbContext = _context.Item.Include(i => i.Category);
-			return View(await applicationDbContext.ToListAsync());
+			var items = _context.Item.Include(i => i.Category);
+			return View(await items.ToListAsync());
 		}
 
 		// GET: Items/Details/5
-		public async Task<IActionResult> Details(int? id)
+		public async Task<IActionResult> Details(int? id, bool order = false, int? category = null)
 		{
 			if (id == null)
 			{
@@ -44,7 +44,8 @@ namespace sklad.Controllers
 			{
 				return NotFound();
 			}
-
+			ViewBag.order = order;
+			ViewBag.category = category;
 			return View(item);
 		}
 

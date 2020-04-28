@@ -42,5 +42,8 @@ namespace sklad.Models
 		}
 
 		public string Image { get; set; }
+
+		[Display(Name = "Opis")]
+		public string Description { get; set; }
 	}
 }

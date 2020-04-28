@@ -1,0 +1,55 @@
+﻿
+@{
+    ViewData["Title"] = "Statistics";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Statistics</h1>
+@{ 
+    SelectList months = new SelectList(Enumerable.Range(1,12));
+    SelectList years = new SelectList(Enumerable.Range(2019,10));
+}
+
+@Html.DropDownList("Month", months)
+@Html.DropDownList("Year", years)
+
+<div>
+    Liczba zamówień: <span id="amount"></span>
+    <br />
+    Przychód: <span id="income"></span>
+</div>
+
+<script>
+    $(document).ready(function () {
+        load();
+    });
+
+    $('#Month').change(function () {
+        load();
+    });
+
+    $('#Year').change(function () {
+        load();
+    });
+
+    function load() {
+        var month = $("#Month").children("option:selected").text();
+        var year = $("#Year").children("option:selected").text();
+        var target = '@Url.Action("MonthStatistics", "Admin")';
+        $.ajax({
+            url: target,
+            type: 'GET',
+            data: {
+                month: month,
+                year: year
+            },
+            success: function (response) {
+                $("#amount").text(response.item1);
+                $("#income").text(response.item2);
+            },
+            error: function (jqXhr, textStatus, errorMessage) {
+                console.log('Error: ' + errorMessage);
+            }
+        })
+    }
+</script>

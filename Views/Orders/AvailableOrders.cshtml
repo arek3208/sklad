@@ -7,6 +7,8 @@
 
 <h1>Moje zamówienia</h1>
 
+<a asp-action="DriverFinishedOrders">Zakończone</a>
+
 <table class="table">
     <thead>
         <tr>
@@ -43,7 +45,7 @@
                 {
                     @Html.Raw($"{oi.Amount} (");
                     @Html.DisplayFor(x => oi.Item.PriceFor);
-                    @Html.Raw($") {oi.Item.Name}</ br>");
+                    @Html.Raw($") {oi.Item.Name} </ br>");
                 }
             </td>
             <td>
@@ -97,7 +99,7 @@
                 {
                     @Html.Raw($"{oi.Amount} (");
                     @Html.DisplayFor(x => oi.Item.PriceFor);
-                    @Html.Raw($") {oi.Item.Name}</ br>");
+                    @Html.Raw($") {oi.Item.Name} </ br>");
                 }
             </td>
             <td>
