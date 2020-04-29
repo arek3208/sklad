@@ -55,6 +55,7 @@
                 @Html.DisplayFor(modelItem => item.Address.Formatted)
             </td>
             <td>
+                <a href="@Html.DisplayFor(modelItem => item.Address.NavigationUrl)">Wyznacz trasę</a>
             </td>
         </tr>
         }

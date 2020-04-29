@@ -44,8 +44,8 @@
                 year: year
             },
             success: function (response) {
-                $("#amount").text(response.item1);
-                $("#income").text(response.item2);
+                $("#amount").text(response.ordersAmount);
+                $("#income").text(response.income);
             },
             error: function (jqXhr, textStatus, errorMessage) {
                 console.log('Error: ' + errorMessage);

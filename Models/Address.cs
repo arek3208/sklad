@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,7 +37,7 @@ namespace sklad.Models
 		public override string ToString()
 		{
 			StringBuilder sb = new StringBuilder($"{Street} {BuildingNo}");
-			if (UnitNo != "")
+			if (!string.IsNullOrEmpty(UnitNo))
 			{
 				sb.Append($"/{UnitNo}");
 			}
@@ -48,6 +50,32 @@ namespace sklad.Models
 			get => ToString();
 		}
 
-		public static Address CompanyAddress { get; set; } = new Address { City = "Nowy Sącz", Street = "Piłsudskiego", BuildingNo = "1", PostalCode = "33-300" };
+		public string NavigationUrl
+		{
+			get
+			{
+				var encodedAddress = System.Web.HttpUtility.UrlEncode(ToString(), Encoding.UTF8);
+				return @$"https://www.google.com/maps/dir/?api=1&destination={encodedAddress}&travelmode=driving&dir_action=navigate";
+			}
+		}
+
+		public static Address CompanyAddress
+		{
+			get
+			{
+				var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\settings\\address.json");
+				if (File.Exists(path))
+				{
+					return JsonConvert.DeserializeObject<Address>(File.ReadAllText(path));
+				}
+				return new Address();
+			}
+
+			set
+			{
+				var address = JsonConvert.SerializeObject(value);
+				File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\settings\\address.json"), address);
+			}
+		}
 	}
 }

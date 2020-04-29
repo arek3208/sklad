@@ -144,7 +144,7 @@ namespace sklad.Controllers
                     income += i.Amount * i.Price;
                 }
             }
-            return new JsonResult(new Tuple<int, decimal>(ordersAmount, income));
+            return new JsonResult(new {ordersAmount, income});
         }
     }
 }
