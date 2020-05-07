@@ -10,6 +10,7 @@
 <p>
     <a asp-action="Create" asp-controller="Addresses" asp-route-Cart="true">Dodaj nowy</a>
 </p>
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 <table class="table">
     <thead>
         <tr>
@@ -35,30 +36,31 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Street)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BuildingNo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UnitNo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PostalCode)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.City)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ApplicationUser.Id)
-            </td>
-            <td>
-                @Html.ActionLink("Wybierz", "MakeOrder", "Orders", new { AddressId = item.Id})
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Street)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BuildingNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UnitNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PostalCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.City)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApplicationUser.Id)
+                </td>
+                <td>
+                    @Html.ActionLink("Wybierz", "MakeOrder", "Orders", new { AddressId = item.Id })
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

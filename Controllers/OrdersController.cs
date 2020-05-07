@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using sklad.Data;
 using sklad.Extensions;
 using sklad.Models;
@@ -30,6 +33,10 @@ namespace sklad.Controllers
 		{
 			var user = await _userManager.GetUserAsync(User);
 			var addresses = _context.Address.Include(a => a.ApplicationUser).Where(a => a.ApplicationUser == user);
+			if(TempData.ContainsKey("error") && (bool)TempData["error"])
+			{
+				ModelState.AddModelError(string.Empty, "Wybrany adres jest błędny lub za daleko od składu");
+			}
 			return View(addresses);
 		}
 
@@ -41,6 +48,25 @@ namespace sklad.Controllers
 			{
 				return NotFound();
 			}
+
+			string companyAddress = System.Web.HttpUtility.UrlEncode(Address.CompanyAddress.ToString(), Encoding.UTF8);
+			string clientAddress = System.Web.HttpUtility.UrlEncode(Address.ToString(), Encoding.UTF8);
+			var path = $@"https://maps.googleapis.com/maps/api/directions/json?origin={companyAddress}&destination={clientAddress}&mode=driving&units=metric&key=AIzaSyAJ-tCgr0k980jrXqk3F8Ni_EUoNn6-YC4";
+			try
+			{
+				string json = new WebClient().DownloadString(path);
+				var response = JsonConvert.DeserializeObject<MapsAPI.Rootobject>(json);
+				if (response.status != "OK" || response.routes[0].legs[0].distance.value > 50000)
+				{
+					TempData["error"] = true;
+					return RedirectToAction("SelectAddress");
+				}
+			}
+			catch(Exception e)
+			{
+				return new StatusCodeResult(500);
+			}
+
 			Dictionary<int, int> cart = HttpContext.Session.GetObject<Dictionary<int, int>>("cart");
 			if (cart == null)
 			{

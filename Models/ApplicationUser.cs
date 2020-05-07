@@ -51,5 +51,8 @@ namespace sklad.Models
 			sb.Append(' ');
 			return sb.ToString();
 		}
+
+		[Display(Name = "Numer telefonu")]
+		public override string PhoneNumber { get => base.PhoneNumber; set => base.PhoneNumber = value; }
 	}
 }
