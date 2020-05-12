@@ -50,9 +50,13 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Client.Formatted)
+                @Html.Raw(" tel. " + item.Client.PhoneNumber)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Address.Formatted)
+            </td>
+            <td>
+                <a asp-action="FinishOrder" asp-route-id="@item.Id">Zakończ</a>
             </td>
             <td>
                 <a href="@Html.DisplayFor(modelItem => item.Address.NavigationUrl)">Wyznacz trasę</a>
@@ -105,6 +109,7 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Client.Formatted)
+                @Html.Raw(" tel. " + item.Client.PhoneNumber)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Address.Formatted)
