@@ -53,7 +53,7 @@
                 @Html.DisplayFor(modelItem => item.Category.Name)
             </td>
             <td>
-                <img class="img-responsive" src="@Url.Content("~/img/items/" + @item.Image)" alt="">
+                <img class="img-responsive items-img" src="@Url.Content("~/img/items/" + @item.Image)" alt="">
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edycja</a> |

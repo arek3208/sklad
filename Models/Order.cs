@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace sklad.Models
 {
@@ -21,13 +19,16 @@ namespace sklad.Models
 
 		[ForeignKey("Client")]
 		public string ClientId { get; set; }
+		[Display(Name = "Klient")]
 		public ApplicationUser Client { get; set; }
 
 		[ForeignKey("Driver")]
 		public string DriverId { get; set; }
+		[Display(Name = "Kierowca")]
 		public ApplicationUser Driver { get; set; }
 
 		public int AddressId { get; set; }
+		[Display(Name = "Adres")]
 		public Address Address { get; set; }
 
 		[Display(Name = "Towary")]

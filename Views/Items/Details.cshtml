@@ -58,7 +58,7 @@
                     <input type="hidden" name="id" value="@Model.Id" />
                     <input class="form-control" min="1" type="number" value="1" name="amount" data-val="true" data-val-required="Podaj ilość" data-val-range="Ilość powinna być większa od 0 i mniejsza od ilości towaru w magazynie" data-val-range-min="1" data-val-range-max="@Model.Quantity" />
                     <span class="text-danger field-validation-valid" data-valmsg-for="amount" data-valmsg-replace="true"></span>
-                    <input type="submit" value="Dodaj do koszyka" />
+                    <input type="submit" class="btn btn-primary" value="Dodaj do koszyka" />
                 }
             }
         </dd>

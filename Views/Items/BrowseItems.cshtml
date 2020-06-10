@@ -51,7 +51,7 @@
 					@Html.DisplayFor(modelItem => item.Quantity)
 				</td>
 				<td>
-					<img class="img-responsive" src="@Url.Content("~/img/items/" + @item.Image)" alt="">
+					<img class="img-responsive items-img" src="@Url.Content("~/img/items/" + @item.Image)" alt="">
 				</td>
 				<td>
 					<a asp-action="Details" asp-route-id="@item.Id" asp-route-order="true" asp-route-category="@ViewBag.active">Szczegóły</a> |
@@ -62,7 +62,7 @@
 						<input type="hidden" name="id" value="@item.Id" />
 						<input class="form-control" min="1" type="number" value="1" name="amount" data-val="true" data-val-required="Podaj ilość" data-val-range="Ilość powinna być większa od 0 i mniejsza od ilości towaru w magazynie" data-val-range-min="1" data-val-range-max="@item.Quantity" />
 						<span class="text-danger field-validation-valid" data-valmsg-for="amount" data-valmsg-replace="true"></span>
-						<input type="submit" value="Dodaj do koszyka" />
+						<input type="submit" class="btn btn-primary" value="Dodaj do koszyka" />
 					}
 				</td>
 			</tr>
