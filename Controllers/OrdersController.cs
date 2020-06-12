@@ -51,7 +51,7 @@ namespace sklad.Controllers
 
 			string companyAddress = System.Web.HttpUtility.UrlEncode(Address.CompanyAddress.ToString(), Encoding.UTF8);
 			string clientAddress = System.Web.HttpUtility.UrlEncode(Address.ToString(), Encoding.UTF8);
-			var path = $@"https://maps.googleapis.com/maps/api/directions/json?origin={companyAddress}&destination={clientAddress}&mode=driving&units=metric&key=AIzaSyAJ-tCgr0k980jrXqk3F8Ni_EUoNn6-YC4";
+			var path = $@"https://maps.googleapis.com/maps/api/directions/json?origin={companyAddress}&destination={clientAddress}&mode=driving&units=metric&key=AIzaSyA1DV27cYzewZnD4OuKoattJH9KhuIQwLA";
 			try
 			{
 				string json = new WebClient().DownloadString(path);

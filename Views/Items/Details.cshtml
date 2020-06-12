@@ -41,9 +41,12 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Category.Name)
         </dd>
-        <td>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Image)
+        </dt>
+        <dd class="col-sm-10">
             <img class="img-responsive" src="@Url.Content("~/img/items/" + Model.Image)" alt="">
-        </td>
+        </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Description)
         </dt>
@@ -65,7 +68,10 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edycja</a> |
+    @if (User.IsInRole("Admin"))
+    {
+        <a asp-action="Edit" asp-route-id="@Model.Id">Edycja</a> 
+    }
     @if (ViewBag.order)
     {
         <a asp-action="BrowseItems" asp-route-id="@ViewBag.category">Powrót</a>
